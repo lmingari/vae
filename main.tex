@@ -37,21 +37,47 @@ TEXT
 \end{abstract}
 
 \introduction 
-TEXT
+%
+% General overview
+%
+Real-time operational forecasts of volcanic ash plumes typically rely on numerical simulations based on physical models that describe plume dynamics, atmospheric transport, strength and distribution of emissions, particle sedimentation and deposition to make predictions of ash concentrations or potential aviation hazards. However, the complexity of the physical phenomena, multiplicity of scales involved and the uncertainty in the quantification of the eruptive source term or the meteorological fields, make the modelling of volcanic plumes challenging and forecasts based on numerical simulations prone to errors.
 
-Most of geophysical models are computationally demanding, making the simulation of large ensembles prohibitively expensive, especially in the context of operational services. In order to accommodate the available computing resources, the ensemble is usually limited to a few dozen of simulations, introducing important sampling errors. Generative AI models can generate large ensembles with thousands of samples almost instantaneously at very low computational cost. To this purpose, the AI models must be trained to generate results in agreement with the underlying physical laws governing the atmospheric dispersion and transport of volcanic ash. The Variarional Autoencoder \citet[VAE][]{kingma2013} represent one of the most prominent example of generative model. It consists of an encoder and decoder, like a traditional autoencoder, ...
+%
+% Model uncertainties
+%
+In particular, the determination of the so-called Eruptive Source Parameter (ESP) is one of the major challenges in volcanic plume modelling due to limited real-time observations, complex eruptive dynamics and rapid variability in emission patterns.
 
 
+%
+% Ensemble modelling
+%
+Ensemble modelling is a popular approach to deal with uncertainties associated to model parameters, spatial distribution and time dependency of eruptive emissions or meteorological data. Most of geophysical models are computationally demanding, making the simulation of large ensembles prohibitively expensive, especially in the context of real-time operational services. In order to accommodate the available computing resources, the ensemble is usually limited to a few dozen of simulations, introducing important sampling errors. 
+
+
+
+
+and strong sensitivity of model outputs to poorly constrained inputs.
+
+%Ensemble modelling allows one to characterise and quantify model uncertainties due to poorly constrained input parameters and errors in the model physics parameterisations or the underlying model-driving meteorological data. In addition, the ability to generate ensemble runs makes it possible to improve forecasts by incorporating observations using different ensemble-based data assimilation techniques.
+
+
+%
+
+%
+% Generative AI models
+%
+Generative AI models can generate large ensembles with thousands of samples almost instantaneously at very low computational cost. To this purpose, the AI models must be trained to generate results in agreement with the underlying physical laws governing the atmospheric dispersion and transport of volcanic ash. The Variarional Autoencoder \citet[VAE][]{kingma2013} represent one of the most prominent example of generative model. It consists of an encoder and decoder, like a traditional autoencoder, ...
+
+%
+% FALL3D model
+%
 By perturbing eruption source parameters or meteorological fields, it's possible to run an ensemble of simulation in a very efficient way using FALL3D \citep{folch2022}. However, real-time forecasting using ensembles requires running computationally intensive tasks, which can be challenging even for High-Performance Computing (HPC) clusters. Consequently, the size of the ensemble is usually constrained by the computational resources available. In practice, the number of simulations in the ensemble using Eulerian models is usually limited to a few hundred or even less.
 
-Ensemble modelling allows one to characterise and quantify model uncertainties due to poorly constrained input parameters and errors in the model physics parameterisations or the underlying model-driving meteorological data. In addition, the ability to generate ensemble runs makes it possible to improve forecasts by incorporating observations using different ensemble-based data assimilation techniques.
 
-\citet{chen2025} trained a VAE using sea ice reanalysis and conducted assimilation experiments by means of a particle filter technique. The Latent Space Particle Filter (LSPF) approach takes advantage of a variational autoencoder to extract low-dimensional representations of sea ice physical fields, enabling a large number of low-dimensional samples to be generateda In this way, they significantly reduces model errors by assimilating satellite observations of sea ice concentration and thickness.
-
-
-
-%% Copied
-%% Several studies have utilized the latent space of VAE for data assimilation, demonstrating its effectiveness in both mathematical theory and practical applications.
+%
+% Latent space data assimilation
+%
+Recently, several studies have demonstrated the benefits of using the latent space of VAE for data assimilation~\cite{pasmans2025}. \citet{chen2025} trained a VAE using sea ice reanalysis and conducted assimilation experiments by means of a particle filter technique. The Latent Space Particle Filter (LSPF) approach takes advantage of a variational autoencoder to extract low-dimensional representations of sea ice physical fields, enabling a large number of low-dimensional samples to be generateda In this way, they significantly reduces model errors by assimilating satellite observations of sea ice concentration and thickness.
 
 \section{Physical model and datasets}
 A physical model is used to generate the datasets required for training and evaluation of the variational autoencoder. Specifically, a volcanic ash transport and dispersion (VATD) model was used to simulate the atmospheric transport of ash from a volcanic source. The ensembles of numerical simulations were performed using the latest version release of FALL3D (v9.1), an open source code. FALL3D is an Eulerian model for atmospheric passive transport and deposition of different atmospheric species (\ie, volcanic ash and gases, mineral dust, and radionuclides) and is based on the so-called Advection-Diffusion-Sedimentation (ADS) equation \citep{folch2020,prata2021}. The numerical model is GPU-accelerated using the OpenACC parallel programming model and has been designed to support increasingly larger scientific workloads in preparation for the transition to extreme-scale computing systems \citep{folch2023b}. It has been optimised for the main pre-exascale supercomputer in Europe: LUMI (Finland), Leonardo (Italy) and MareNostrum 5 (Spain).
