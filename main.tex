@@ -1,3 +1,5 @@
+% vim: set textwidth=0:
+%
 \documentclass[acp, manuscript]{copernicus}
 \usepackage{xspace}
 \usepackage{bm}
@@ -40,28 +42,23 @@ TEXT
 %
 % General overview
 %
-Real-time operational forecasts of volcanic ash plumes typically rely on numerical simulations based on physical models that describe plume dynamics, atmospheric transport, strength and distribution of emissions, particle sedimentation and deposition to make predictions of ash concentrations or potential aviation hazards. However, the complexity of the physical phenomena, multiplicity of scales involved and the uncertainty in the quantification of the eruptive source term or the meteorological fields, make the modelling of volcanic plumes challenging and forecasts based on numerical simulations prone to errors.
-
+Real-time operational forecasts of volcanic ash plumes typically rely on numerical simulations based on physical models to make predictions of ash concentrations or potential aviation hazards. Volcanic ash transport and dispersal (VATD) models describe multiple process, such as plume dynamics, atmospheric transport, strength and distribution of emissions, particle sedimentation or deposition. However, the complexity of the physical phenomena, multiplicity of scales involved and the uncertainty in the quantification of the eruptive source term or the meteorological fields, make the modelling of volcanic plumes challenging and forecasts based on numerical simulations prone to errors.
 %
 % Model uncertainties
 %
-In particular, the determination of the so-called Eruptive Source Parameter (ESP) is one of the major challenges in volcanic plume modelling due to limited real-time observations, complex eruptive dynamics and rapid variability in emission patterns.
-
-
+In particular, the so-called Eruption Source Parameters (ESP), such as those required to estimate the column top height, mass eruption rate, particle size distribution or vertical mass distribution, are recognised to be first-order contributors to model errors \citep{costa2016,poulidis2021}. The determination of the ESP is one of the major challenges in volcanic plume modelling due to limited real-time observations, complex eruptive dynamics and rapid variability in emission patterns.
 %
 % Ensemble modelling
 %
-Ensemble modelling is a popular approach to deal with uncertainties associated to model parameters, spatial distribution and time dependency of eruptive emissions or meteorological data. Most of geophysical models are computationally demanding, making the simulation of large ensembles prohibitively expensive, especially in the context of real-time operational services. In order to accommodate the available computing resources, the ensemble is usually limited to a few dozen of simulations, introducing important sampling errors. 
-
-
-
-
-and strong sensitivity of model outputs to poorly constrained inputs.
-
-%Ensemble modelling allows one to characterise and quantify model uncertainties due to poorly constrained input parameters and errors in the model physics parameterisations or the underlying model-driving meteorological data. In addition, the ability to generate ensemble runs makes it possible to improve forecasts by incorporating observations using different ensemble-based data assimilation techniques.
-
-
+Ensemble modelling is a popular approach to deal with uncertainties associated to model parameters, spatial distribution and time dependency of eruptive emissions or meteorological data. Most of geophysical models are computationally demanding, making the simulation of large ensembles prohibitively expensive, especially in the context of real-time operational services. In order to accommodate the available computing resources, ensembles are usually limited to a few dozen of simulations, introducing important sampling errors. 
 %
+% Ensemble applications: error estimation, hazards studies, data assimilation
+%
+With the help of ensembles, it is possible to characterise and quantify forecast uncertainties due to poorly constrained input parameters or model errors.
+%
+%Ensemble modelling allows one to characterise and quantify model uncertainties due to poorly constrained input parameters and errors in the model physics parameterisations or the underlying model-driving meteorological data. 
+%
+In addition, model errors can be reduced incorporating observations into numerical models through the use of ensemble-based data assimilation techniques~\citep{kalnay2003}. Data assimilation (DA) techniques have been widely used to study and forecast geophysical systems and have been applied in a variety of research and operational settings~\citep{carrasi2018}. Similarly, several ensemble-based methods have been applied to the modelling of volcanic plumes~\citep{folch2023}, including ensemble Kalman filter methods~\citep{fu2016,fu2017,osores2020,pardini2020,mingari2022} and ensemble particle filter methods~\citep{zidikheri2021,zidikheri2021b}.
 
 %
 % Generative AI models
@@ -188,7 +185,7 @@ A Variational Autoencoder (VAE) was implemented in the PyTorch framework~\citep{
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{loss}
+  \includegraphics[width=0.7\textwidth]{loss}
   \caption{%
     Training history for the variational autoencoder (VAE) through 400 epochs. %
     The reconstruction loss ($\mathcal{L}_R$) and KL divergence ($\mathcal{L}_{KL}$) %
@@ -220,7 +217,7 @@ Figure~\ref{fig:latent_space}a shows the training and test datasets encoded in l
     \tophline
     Hyperparameter       & Value \\ \middlehline
     Latent dimension     & 16 \\
-    $\beta$              & 6 \\
+    $\beta^\dag$         & 6 \\
     Data size            & 120$\times$100 \\
     Number of epochs     & 400 \\
     Batch size           & 16 \\ 
@@ -234,6 +231,9 @@ Figure~\ref{fig:latent_space}a shows the training and test datasets encoded in l
     Normalization        & Percentile-based scaling \\
     \bottomhline
   \end{tabular}
+  \belowtable{%
+    $^\dag$ Scaling factor for the KL divergence term in the $\beta$-VAE formulation, defined in Eq.~(\ref{eq:vae_loss}).
+  }
 \end{table}
 
 \subsection{Evaluation metrics} \label{sec:metrics}
@@ -244,14 +244,26 @@ A few performance metrics are proposed to quantify the ability of the generative
   \text{RMSE} = \sqrt {\frac{1}{p}\sum^p_{j=1} (y_j-\hat{y}_j)^2}
   \label{eq:rmse}
 \end{equation}
-can be evaluated in terms of the sample means, \ie $\vec{y} = 1/N \sum \vec{x_i}$ and $\vec{\hat{y}} = 1/\hat{N} \sum \vec{\hat{x}_i}$.
+can be evaluated in terms of the sample means, \ie $\vec{y} = 1/N \sum \vec{x_i}$ and $\vec{\hat{y}} = 1/\hat{N} \sum \vec{\hat{x}_i}$. The Mean Bias Error (MBE) is computed from:
+
+\begin{equation}
+  \text{MBE} =\frac{1}{p}\sum^p_{j=1} y_j-\hat{y}_j
+  \label{eq:rmse}
+\end{equation}
+
+The mean absolute percentage error (MAPE), provides a relative measure of the prediction accuracy:
+
+\begin{equation}
+  \text{MAPE} = 100 \times \sum^p_{j=1} \left\vert \dfrac{y_j - \hat{y}_j}{\hat{y}_j} \right\vert
+  \label{eq:mape}
+\end{equation}
 
 The KL divergence is a measure of the difference between two probability distributions. Specifically, for two discrete distributions $P = \{p_i\}$ and $Q=\{q_i\}$, the KL divergence can be interpreted as the expected logarithmic difference between the probability distributions:
 \begin{equation}
   D_{KL}(P \Vert Q) = \sum p_i \log \dfrac{p_i}{q_i}
   \label{eq:kl}
 \end{equation}
-The discrete distributions are computed from the histograms corresponding to each ensemble.
+The discrete distributions are estimated from histograms in this work.
 
 The two-dimensional isotropic power spectrum, $P(k)$, is computed in order to assess the ability of the VAE to generate realistic samples over different spatial scales, in consistency with physical models. It's defined as the radially averaged 2D Power Spectrum Density (PSD) and is a function of the wavenumber magnitude, $k$:
 \begin{equation}
@@ -267,16 +279,17 @@ Once the VAE neural network has been trained with numerical simulations based on
   \centering
   \includegraphics[width=\textwidth]{vae_ensemble}
   \caption{%
-    VAE-generated ensemble composed of 12 samples. %
     The neural network was trained to generate samples %
     of two-dimensional ash column mass, \ie the total %
     mass of volcanic ash in a vertical column.
+    In this example, a VAE-generated ensemble composed of 12 samples is shown. %
     }
   \label{fig:vae_ensemble}
 \end{figure}
 
 \subsection{Sensitivity study}
-We trained multiple VAEs changing the latent space dimension and $\beta$ (see~\ref{eq:vae_loss}), while the remaining hyperparameters remain fixed as specified in Table~\ref{tab:hyperparameters}. The performance was evaluated in term of the ensemble mean RMSE (see~\ref{eq:rmse}). To this purpose, 2048-member ensembles were generated and the RMSE was computed for each ensemble. Since the VAE is a probabilistic model, each sampled ensemble will yield different results. The boxplot in Fig.~\ref{fig:boxplot} reflects this variability considering 20 ensembles generated using the same hyperparameters. In all cases, the network was trained for 400 epochs, except for the configurations with latent dimension of 4 and 2, where early stopping was required to avoid overfitting. According to the trend suggested by Fig.~\ref{fig:boxplot}, the best performance is achieved for latent dimensions above 6 and $\beta\gtrsim 6$. Next, we present results using a latent dimension of 16 and $\beta=6$, as indicated in Table~\ref{tab:hyperparameters}.
+We trained multiple VAEs changing the latent space dimension and $\beta$
+(see~\ref{eq:vae_loss}), while fixing the remaining hyperparameters as specified in Table~\ref{tab:hyperparameters}. The performance was evaluated in term of the ensemble mean RMSE (see~\ref{eq:rmse}). To this purpose, 2048-member ensembles were generated and the RMSE was computed for each ensemble. Since the VAE is a probabilistic model, each sampled ensemble will yield different results. The boxplot in Fig.~\ref{fig:boxplot} reflects this variability considering 20 ensembles generated using the same hyperparameters. In all cases, the network was trained for 400 epochs, except for the configurations with latent dimension of 4 and 2, where early stopping was required to avoid overfitting. According to the trend suggested by Fig.~\ref{fig:boxplot}, the best performance is achieved for latent dimensions above 6 and $\beta\gtrsim 6$. Next, we present results using a latent dimension of 16 and $\beta=6$, as indicated in Table~\ref{tab:hyperparameters}.
 
 \begin{figure}[ht]
   \centering
@@ -286,40 +299,61 @@ We trained multiple VAEs changing the latent space dimension and $\beta$ (see~\r
 \end{figure}
 
 \subsection{Ensemble mean and spread}
-The ensemble mean and spread (standard deviation) are shown in Fig.~\ref{fig:mean_spread} for the training dataset (a,d), a 5000-member ensemble generated by the VAE (b,e) and the test dataset (c,f). The statistics computed for the training dataset and the VAE are similar to those computed for the test dataset, although some differences can be identified in Fig.~\ref{fig:mean_spread}e for the VAE ensemble spread.
+The ensemble mean and spread (standard deviation) are shown in Fig.~\ref{fig:mean_spread} for the training dataset (a,d), a 5000-member ensemble generated by the VAE (b,e) and the test dataset (c,f). The statistics computed for the training dataset and the VAE are similar to those computed for the test dataset, although some differences can be identified in Fig.~\ref{fig:mean_spread}e for the VAE ensemble spread. A summary of some metrics is shown in Table~\ref{tab:metrics}. The VAE metrics are averaged over 20 ensembles generated to account for the variability introduced by the stochastic sampling. The metrics are evaluated taking the test dataset as reference, as mentioned in Sect.~\ref{sec:metrics}. The VAE errors measured in terms of the RMSE are twice as high as those evaluated from the training dataset. In relative terms, this represent a difference of 1.78\% (training) and $3.4(6)\%$ (VAE) according to the MAPE evaluated from the ensemble mean. In order to avoid divisions by zero and numerical instabilities, the MAPE was computed where the reference is above $5~g~m^{-2}$ (see Fig.~\ref{fig:mean_spread}c). We can conclude that VAE is properly capturing the first and second moments of the distribution, although the training estimations for the ensemble mean and spread are still slightly better. Next, we'll show VAE have a better performance for statistics more sensitive to sampling errors.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{mean_spread}
-  \caption{Ensemble mean (a,b,c) and ensemble spread (d,e,f) computed from the training dataset (left column), ensemble VAE with 5000 samples (central column) and the test dataset (right column).}
+  \caption{%
+    Ensemble mean (a,b,c) and ensemble spread (d,e,f) computed from %
+    the training dataset (left column), ensemble VAE with 5000 samples %
+    (central column) and the test dataset (right column).
+    }
   \label{fig:mean_spread}
 \end{figure}
 
 \begin{table}[t]
-  \caption{Metrics.}
+  \caption{
+    A summary of some performance metrics evaluated taking the test dataset as reference.
+    The VAE metrics were computed over 20 ensembles generated to account for stochastic variability.
+    The average is reported along with an uncertainty range given by the standard deviation.
+  }
   \label{tab:metrics}
-  \begin{tabular}{lcc}
+  \begin{tabular}{lccc}
     \tophline
-    Metric       & Training dataset  & VAE (2048 samples) \\ \middlehline
-    Mean RMSE    & 0.108             & 0.20  $\pm 0.03$   \\
-    Mean bias    & 0.001             & -0.04 $\pm 0.02$   \\
-    Spread RMSE  & 0.255             & 0.56  $\pm 0.04$   \\
-    Spread bias  & -0.004            & -0.17 $\pm 0.01$   \\
-    MAPE         & 1.784             & 3.4   $\pm 0.6$    \\
+    Metric    & Variable  & Training dataset  & VAE (2048 samples) \\ \middlehline
+    RMSE      & Mean      & 0.108             & $0.20  \pm 0.03$   \\
+    MBE       & Mean      & 0.001             & $-0.04 \pm 0.02$   \\
+    MAPE (\%) & Mean      & 1.784             & $3.4   \pm 0.6$    \\ \middlehline
+    RMSE      & Spread    & 0.255             & $0.56  \pm 0.04$   \\
+    MBE       & Spread    & -0.004            & $-0.17 \pm 0.01$   \\
     \bottomhline
   \end{tabular}
+  \belowtable{ In units of $g m^{-2}$, except MAPE.  }
 \end{table}
 
 \subsection{Probability distributions}
-A proper assessment of natural hazard involves a good estimation of probabilities. For example, it may be desirable to estimate the exceedance probability, \ie the probability that a specific hazard's value will be exceeded within a given timeframe. For this reason, it is essential to have an accurate description of probability distributions based on the ensembles.
-
-In Fig.~\ref{fig:exceedance} exceedance probabilities considering different thresholds (8,14,20~$g~m^{-2}$) are shown. Again, the probability maps reveals that the VAE is able to generate realistic samples with the correct probability distribution.
+A proper assessment of natural hazard involves a good estimation of probabilities. For example, it may be desirable to estimate the exceedance probability, \ie the probability that a specific hazard's value will be exceeded within a given timeframe. For this reason, it is essential to have an accurate description of probability distributions. However, empirical distribution estimation based on small ensembles can be challenging due to sampling errors. Figure~\ref{fig:exceedance} shows a few exceedance probabilities for different thresholds. Again, the probability maps reveals that the VAE is able to generate realistic samples with the correct probability distribution.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{exceedance_probability}
   \caption{Exceedance probabilities for three thresholds: 8,14 and 20~$g~m^{-2}$. Left column shows the results for the training dataset, central column corresponds to a VAE ensemble of 5000 samples and the right column shows the results for the test dataset.}
   \label{fig:exceedance}
+\end{figure}
+
+In order to examine if the VAE ensemble provides a better approximation to the actual distribution, the KL divergence, $D_{KL}$, is computed to quantify the difference between probability distributions~(see \ref{eq:kl}). The discrete probability distribution corresponding to the test dataset is taken as the reference distribution. The results in Fig.~\ref{fig:kl_divergence} indicate that VAE yields much lower $D_{KL}$, meaning that VAE is providing a better approximation of the actual distribution.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{kl_divergence}
+  \caption{%
+    Kullback Leibler (KL) divergence computed from the training dataset (a) %
+    and the VAE-generated samples (b). From these results, it is possible %
+    conclude that the actual probability distribution is better %
+    approximated by the VAE ensemble.
+    }
+  \label{fig:kl_divergence}
 \end{figure}
 
 To explore this point further, a few histograms for different locations are shown in Fig.~\ref{fig:histograms} comparing results for the training dataset (left column) and a VAE ensemble with 5000 samples (right column). As expected, the distribution for the training dataset with a small ensemble size (256) results in a very noisy distribution, while the VAE distribution provides a good approximation of the test dataset, even for multimodal distributions (\eg, Fig.~\ref{fig:histograms}b).
@@ -336,25 +370,6 @@ To explore this point further, a few histograms for different locations are show
   \label{fig:histograms}
 \end{figure}
 
-In order to quantify the difference between two probability distributions, the KL divergence~(\ref{eq:kl}) is computed taking as a reference the discrete probability distribution $P^{Test} = \{p_1,\dots,p_{nbins}\}$, corresponding to the test dataset. Basically, we want to examine if the VAE ensemble provides a better approximation to the actual distribution. To this purpose, the VAE KL divergence is computed from $Q^{VAE}$ (\ie, the VAE discrete probability distribution) using:
-\begin{equation}
-  D^{VAE}_{KL} = D_{KL}(Q^{VAE} \Vert P^{Test})
-\end{equation}
-The results are shown in Fig.~\ref{fig:kl_divergence}a. Similarly, Fig.~\ref{fig:kl_divergence}b shows the train KL divergence:
-\begin{equation}
-  D^{Train}_{KL} = D_{KL}(Q^{Train} \Vert P^{Test})
-\end{equation}
-being $Q^{Train}$ the training dataset distribution. In general, VAE yields lower values ($D^{VAE}_{KL}<D^{Train}_{KL}$), meaning that the VAE provides a better approximation of the actual distribution. However, looking at the differences between the divergences, $D^{VAE}_{KL} - D^{Train}_{KL}$ (Fig.~\ref{fig:kl_divergence}c), it is possible conclude that in some regions the training dataset outperforms the samples generated by the VAE (positive differences, red shaded areas).
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.5\textwidth]{kl_divergence}
-  \caption{%
-    Kullback Leibler (KL) divergence computed from the VAE ensemble (a) and the training dataset (b). From the difference between both divergences (c) it is possible conclude if the actual probability distribution is better approximated by the VAE ensemble (negative differences) or the training ensemble (positive differences).
-    }
-  \label{fig:kl_divergence}
-\end{figure}
-
 \subsection{Isotropic power spectrum}
 The isotropic power spectrum, \ie the radially averaged two-dimensional Power Spectral Density (PSD), was computed for each sample for the ensemble using (\ref{eq:psd}). The ensemble average is presented in Fig.~\ref{fig:psd} for samples generated by the VAE and for the test dataset. In both cases the ensemble size is 2048. Instead of the classical energy cascade spectrum according to $\propto k^{-5/3}$, the dispersal model exhibits an exponential decay as consequence of the diffusion processes modelled by FALL3D (solid black line). The generative model reproduces large scales but fails at scales smaller, as shown in Fig.~\ref{fig:psd} (blue circles). In this case, the isotropic power spectrum deviates from exponential decay for wavenumbers above $0.25~\Delta x^{-1}$, approximately, where $\Delta x$ is the grid size. In other words, the variational autoencoder is unable to reproduce the variability over spatial scales below $\sim 4~\Delta x$.
 
@@ -363,6 +378,18 @@ The isotropic power spectrum, \ie the radially averaged two-dimensional Power Sp
   \includegraphics[width=0.5\textwidth]{psd}
   \caption{The isotropic power spectrum, \ie radially averaged two-dimensional Power Spectral Density, reveals inconsistencies in the spatial structure of the samples generated by the variational autoencoder. The generative model reproduces large scales but fails at scales smaller since the AI model is introducing artificial noise for large k. Since the wavenumber is expressed in terms of the grid size, $\Delta x$, we can conclude that the VAE is unable to reproduce the variability over spatial scales below $\sim 4~\Delta x$, approximately. }
   \label{fig:psd}
+\end{figure}
+
+To illustrate this point, Fig.~\ref{fig:bias} shows a map of the bias computed in terms of the ensemble mean, where a noisy pattern with small intensity and high-frequency structure can be identified in the VAE results.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{bias}
+  \caption{%
+    Bias computed from the ensemble mean for the training dataset (a) and the VAE samples (b).
+    The generative AI model produces a noisy pattern with small intensity and high-frequency.
+    }
+  \label{fig:bias}
 \end{figure}
 
 \conclusions \label{sec:conclusions}

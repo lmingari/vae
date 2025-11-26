@@ -1,5 +1,6 @@
 @STRING{acp={Atm.\ Chem. \ Phys.}}
 @STRING{atm={Atmosphere}}
+@STRING{ares={Atmos.\ Res.}}
 @STRING{blm={Bound-Lay.\ Meteorol.}}
 @STRING{bv={Bull.\ Volcanol.}}
 @STRING{compgeo={Comput.\ Geosci.}}
@@ -18,6 +19,17 @@
 @STRING{jgro={J.\ Geophys.\ Res.-Oceans}}
 @STRING{jvgr={J.\ Volcanol.\ Geoth.\ Res.}}
 
+@article{carrasi2018,
+    author = {Carrassi, Alberto and Bocquet, Marc and Bertino, Laurent and Evensen, Geir},
+    title = {Data assimilation in the geosciences: An overview of methods, issues, and perspectives},
+    journal = {WIREs Clim. Change},
+    volume = {9},
+    number = {5},
+    pages = {e535},
+    doi = {10.1002/wcc.535},
+    year = {2018}
+}
+
 @article{chen2025,
     author = {Chen, Zhiqiang and Li, Delin and Liu, Jiping and Xu, Jianjun and Yang, Qinghua},
     title = {Assimilating Observations to Improve Arctic Sea Ice Seasonal Prediction: A Variational Autoencoder Latent Space Particle Filter Approach},
@@ -27,6 +39,16 @@
     pages = {e2024JC022206},
     doi = {10.1029/2024JC022206},
     year = {2025}
+}
+
+@article{costa2016,
+    author = {A. Costa and Y.J. Suzuki and M. Cerminara and B.J. Devenish and T. Esposti Ongaro and M. Herzog and A.R. {Van Eaton} and L.C. Denby and M. Bursik and M. {de' Michieli Vitturi} and S. Engwell and A. Neri and S. Barsotti and A. Folch and G. Macedonio and F. Girault and G. Carazzo and S. Tait and E. Kaminski and L.G. Mastin and M.J. Woodhouse and J.C. Phillips and A.J. Hogg and W. Degruyter and C. Bonadonna},
+    title = {Results of the eruptive column model inter-comparison study},
+    journal = jvgr,
+    volume = {326},
+    pages = {2--25},
+    year = {2016},
+    doi = {10.1016/j.jvolgeores.2016.01.017},
 }
 
 @article{degruyter2012,
@@ -61,16 +83,18 @@
     doi = {10.3389/feart.2021.741841}
 }
 
-@incollection{folch2023,
-  author       = {Folch, A. and Mingari, L.},
-  title        = {Data assimilation of volcanic clouds: recent advances and implications on operational forecasts},
-  booktitle    = {Applications of Data Assimilation and Inverse Problems in the Earth Sciences},
-  publisher    = {Cambridge University Press},
-  year         = {2023},
-  editor       = {Alik Ismail-Zadeh and Fabio Castelli and Dylan Jones and Sabrina Sanchez},
-  pagetotal    = {400},
-  address      = {Cambridge},
-}
+@inbook{folch2023, 
+    author     = {Folch, Arnau and Mingari, Leonardo}, 
+    title      = {Data Assimilation of Volcanic Clouds: Recent Advances and Implications on Operational Forecasts},
+    booktitle  = {Applications of Data Assimilation and Inverse Problems in the Earth Sciences}, 
+    publisher  = {Cambridge University Press}, 
+    year       = {2023}, 
+    editor     = {Ismail-Zadeh, Alik and Castelli, Fabio and Jones, Dylan and Sanchez, SabrinaEditors}, 
+    pages      = {144--156}, 
+    place      = {Cambridge}, 
+    series     = {Special Publications of the International Union of Geodesy and Geophysics},
+    collection = {Special Publications of the International Union of Geodesy and Geophysics}
+} 
 
 @article{folch2023b,
   title     = {The EU Center of Excellence for Exascale in Solid Earth (ChEESE): Implementation, results, and roadmap for the second phase},
@@ -80,6 +104,35 @@
   year      = {2023},
   publisher = {Elsevier},
   doi       = {j.future.2023.04.006}
+}
+
+@article{fu2016,
+    author = {Fu, G. and Heemink, A. and Lu, S. and Segers, A. and Weber, K. and Lin, H.-X.},
+    title = {Model-based aviation advice on distal volcanic ash clouds by assimilating aircraft in situ measurements},
+    journal = acp,
+    volume = {16},
+    year = {2016},
+    number = {14},
+    pages = {9189--9200},
+    doi = {10.5194/acp-16-9189-2016}
+}
+
+@article{fu2017,
+    author = {Fu, G. and Prata, F. and Lin, H. X. and Heemink, A. and Segers, A. and Lu, S.},
+    title = {Data assimilation for volcanic ash plumes using a satellite observational operator: a case study on the 2010 Eyjafjallaj\"okull volcanic eruption},
+    journal = acp,
+    volume = {17},
+    year = {2017},
+    number = {2},
+    pages = {1187--1205},
+    doi = {10.5194/acp-17-1187-2017}
+}
+
+@book{kalnay2003,
+  title={Atmospheric modeling, data assimilation and predictability},
+  author={Kalnay, Eugenia},
+  year={2003},
+  publisher={Cambridge university press}
 }
 
 @article{kingma2013,
@@ -98,6 +151,38 @@
     pages={239--245},
     year={1979},
     publisher={Taylor \& Francis Group}
+}
+
+@article{mingari2022,
+    author = {Mingari, L. and Folch, A. and Prata, A. T. and Pardini, F. and Macedonio, G. and Costa, A.},
+    title = {Data assimilation of volcanic aerosol observations using FALL3D+PDAF},
+    journal = acp,
+    volume = {22},
+    year = {2022},
+    number = {3},
+    pages = {1773--1792},
+    doi = {10.5194/acp-22-1773-2022}
+}
+
+@article{osores2020,
+    author = {Osores, S. and Ruiz, J. and Folch, A. and Collini, E.},
+    title = {Volcanic ash forecast using ensemble-based data assimilation: an ensemble transform Kalman filter coupled with the FALL3D-7.2 model (ETKF--FALL3D version 1.0)},
+    journal = gmd,
+    volume = {13},
+    year = {2020},
+    number = {1},
+    pages = {1--22},
+    doi = {10.5194/gmd-13-1-2020}
+}
+
+@article{pardini2020,
+  title={Ensemble-Based Data Assimilation of Volcanic Ash Clouds from Satellite Observations: Application to the 24 December 2018 Mt. Etna Explosive Eruption},
+  author={Pardini, Federica and Corradini, Stefano and Costa, Antonio and Esposti Ongaro, Tomaso and Merucci, Luca and Neri, Augusto and Stelitano, Dario and others},
+  journal=atm,
+  volume={11},
+  number={4},
+  pages={359},
+  year={2020},
 }
 
 @article{pfeiffer2005,
@@ -142,6 +227,16 @@
     url={https://arxiv.org/abs/1912.01703}
 }
 
+@article{poulidis2021,
+    author = {Alexandros P. Poulidis and Masato Iguchi},
+    title = {Model sensitivities in the case of high-resolution Eulerian simulations of local tephra transport and deposition},
+    journal = ares,
+    volume = {247},
+    pages = {105136},
+    year = {2021},
+    doi = {10.1016/j.atmosres.2020.105136},
+}
+
 @article{woodhouse2016,
     author = {Mark J. Woodhouse and Andrew J. Hogg and Jeremy C. Phillips},
     title = {A global sensitivity analysis of the PlumeRise model of volcanic plumes},
@@ -150,4 +245,25 @@
     pages = {54--76},
     year = {2016},
     doi = {10.1016/j.jvolgeores.2016.02.019},
+}
+
+@article{zidikheri2021,
+    author = {Zidikheri, Meelis J. and Lucas, Christopher},
+    title = {A Computationally Efficient Ensemble Filtering Scheme for Quantitative Volcanic Ash Forecasts},
+    year = {2021},
+    journal = jgra,
+    volume = {126},
+    number = {2},
+    pages = {e2020JD033094},
+    doi = {10.1029/2020JD033094},
+}
+
+@article{zidikheri2021b,
+    author = {Zidikheri, Meelis J. and Lucas, Chris},
+    title = {Improving Ensemble Volcanic Ash Forecasts by Direct Insertion of Satellite Data and Ensemble Filtering},
+    journal = atm,
+    volume = {12},
+    year = {2021},
+    number = {9},
+    doi = {10.3390/atmos12091215}
 }
