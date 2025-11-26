@@ -295,6 +295,21 @@ The ensemble mean and spread (standard deviation) are shown in Fig.~\ref{fig:mea
   \label{fig:mean_spread}
 \end{figure}
 
+\begin{table}[t]
+  \caption{Metrics.}
+  \label{tab:metrics}
+  \begin{tabular}{lcc}
+    \tophline
+    Metric       & Training dataset  & VAE (2048 samples) \\ \middlehline
+    Mean RMSE    & 0.108             & 0.20  $\pm 0.03$   \\
+    Mean bias    & 0.001             & -0.04 $\pm 0.02$   \\
+    Spread RMSE  & 0.255             & 0.56  $\pm 0.04$   \\
+    Spread bias  & -0.004            & -0.17 $\pm 0.01$   \\
+    MAPE         & 1.784             & 3.4   $\pm 0.6$    \\
+    \bottomhline
+  \end{tabular}
+\end{table}
+
 \subsection{Probability distributions}
 A proper assessment of natural hazard involves a good estimation of probabilities. For example, it may be desirable to estimate the exceedance probability, \ie the probability that a specific hazard's value will be exceeded within a given timeframe. For this reason, it is essential to have an accurate description of probability distributions based on the ensembles.
 
